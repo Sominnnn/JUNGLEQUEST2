@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+<<<<<<< HEAD
     <Button
         android:id="@+id/button2"
         android:layout_width="163dp"
@@ -18,16 +19,20 @@
         app:layout_constraintHorizontal_bias="0.552"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.251" />
+        app:layout_constraintVertical_bias="0.251" /><![CDATA[
 
-    <Button
-        android:id="@+id/categorybtn_main"
-        android:layout_width="227dp"
-        android:layout_height="91dp"
+
+
+    >>>>>> 798c898d1a30d97516fefdc5d250752d647ec629
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+
+
+    ]]>
+
+    <<<<<<< HEAD
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.446" />
 
@@ -52,6 +57,23 @@
         app:layout_constraintHorizontal_bias="0.396"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.818" />
+        app:layout_constraintVertical_bias="0.818" /><![CDATA[
+=======
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.591" />
+>>>>>>> 798c898d1a30d97516fefdc5d250752d647ec629
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    ]]>
+
+    <Button
+        android:id="@+id/categoriesbtn_main"
+        android:layout_width="281dp"
+        android:layout_height="72dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.446" />
+</androidx.constraintlayout.widget.ConstraintLayout>=======
+

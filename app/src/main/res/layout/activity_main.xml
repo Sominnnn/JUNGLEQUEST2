@@ -11,37 +11,55 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/homepage" />
+        app:srcCompat="@drawable/homepage"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <Button
         android:id="@+id/startbtn_main"
         android:layout_width="281dp"
         android:layout_height="72dp"
         android:background="@android:color/transparent"
-        tools:layout_editor_absoluteX="63dp"
-        tools:layout_editor_absoluteY="177dp" />
-
-    <Button
-        android:id="@+id/instructionsbtn_main"
-        android:layout_width="281dp"
-        android:layout_height="72dp"
-        android:background="@android:color/transparent"
-        tools:layout_editor_absoluteX="63dp"
-        tools:layout_editor_absoluteY="522dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.265" />
 
     <Button
         android:id="@+id/leaderboardsbtn_main"
         android:layout_width="281dp"
         android:layout_height="72dp"
+        android:layout_marginTop="44dp"
         android:background="@android:color/transparent"
-        tools:layout_editor_absoluteX="63dp"
-        tools:layout_editor_absoluteY="413dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.591" />
+
+    <Button
+        android:id="@+id/instuctionsbtn_main"
+        android:layout_width="281dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="44dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.782" />
 
     <Button
         android:id="@+id/categoriesbtn_main"
         android:layout_width="281dp"
         android:layout_height="72dp"
         android:background="@android:color/transparent"
-        tools:layout_editor_absoluteX="63dp"
-        tools:layout_editor_absoluteY="290dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.446" />
 </androidx.constraintlayout.widget.ConstraintLayout>

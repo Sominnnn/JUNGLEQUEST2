@@ -1,6 +1,9 @@
 package com.example.junglequest;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +23,26 @@ public class land extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Button backButton = findViewById(R.id.backbtn_land);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to CardCatalogActivity
+                Intent intent = new Intent(land.this, aboutgame.class);
+                startActivity(intent);
+            }
+        });
+
+        Button nextButton = findViewById(R.id.nextbtn_land);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to CardCatalogActivity
+                Intent intent = new Intent(land.this, wild.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

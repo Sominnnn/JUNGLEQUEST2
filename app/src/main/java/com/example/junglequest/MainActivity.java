@@ -23,8 +23,9 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Button cardCatalogButton = findViewById(R.id.startbtn_main);
-        cardCatalogButton.setOnClickListener(new View.OnClickListener() {
+
+        Button choosedifButton = findViewById(R.id.startbtn_main);
+        choosedifButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Navigate to CardCatalogActivity
@@ -32,5 +33,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button instructionButton = findViewById(R.id.instructionbtn_main);
+        instructionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to CardCatalogActivity
+                Intent intent = new Intent(MainActivity.this, aboutgame.class);
+                startActivity(intent);
+            }
+        });
+
+        Button categoriesButton = findViewById(R.id.categoriesbtn_main);
+        categoriesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to CardCatalogActivity
+                Intent intent = new Intent(MainActivity.this, land.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

@@ -13,6 +13,27 @@
         android:theme="@style/Theme.Junglequest"
         tools:targetApi="31">
         <activity
+            android:name=".leaderboard"
+            android:exported="false" />
+        <activity
+            android:name=".youwin"
+            android:exported="false" />
+        <activity
+            android:name=".timerunout"
+            android:exported="false" />
+        <activity
+            android:name=".pause"
+            android:exported="false" />
+        <activity
+            android:name=".hard"
+            android:exported="false" />
+        <activity
+            android:name=".medium"
+            android:exported="false" />
+        <activity
+            android:name=".easy"
+            android:exported="false" />
+        <activity
             android:name=".wild"
             android:exported="false" />
         <activity

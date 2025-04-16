@@ -6,7 +6,9 @@
     android:background="@drawable/easy"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:contentDescription="Drop Zone"
     tools:context=".easy">
+
 
     <Button
         android:id="@+id/pausebtn_easy"
@@ -19,5 +21,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.104" />
+
+    <ImageView
+        android:id="@+id/drag_lion"
+        android:layout_width="76dp"
+        android:layout_height="63dp"
+        app:srcCompat="@drawable/lion_land"
+        android:contentDescription="Draggable Animal"
+        tools:layout_editor_absoluteX="37dp"
+        tools:layout_editor_absoluteY="520dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,15 +27,53 @@ public class easy extends AppCompatActivity {
             return insets;
 
         });
-        // Get the draggable animal ImageView
+        // Get the draggable animal ImageViews
         ImageView draggableAnimal = findViewById(R.id.drag_lion);
+        ImageView draggableTiger = findViewById(R.id.drag_tiger);
+        ImageView draggableElephant = findViewById(R.id.drag_elephant);
+        ImageView draggableGiraffe = findViewById(R.id.drag_giraffe);
+        ImageView draggableZebra = findViewById(R.id.drag_zebra);
 
-        // Set long click listener for drag operation
+        // Set long click listener for lion
                 draggableAnimal.setOnLongClickListener(v -> {
                     ClipData data = ClipData.newPlainText("", "");
                     View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
                     v.startDragAndDrop(data, shadowBuilder, v, 0);
-                    v.setVisibility(View.INVISIBLE); // Optional: hide the original view during drag
+                    v.setVisibility(View.INVISIBLE); // Hide the original view during drag
+                    return true;
+                });
+
+        // Set long click listener for tiger
+                draggableTiger.setOnLongClickListener(v -> {
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+                    v.startDragAndDrop(data, shadowBuilder, v, 0);
+                    v.setVisibility(View.INVISIBLE); // Hide the original view during drag
+                    return true;
+                });
+        // Set long click listener for Elephant
+                draggableElephant.setOnLongClickListener(v -> {
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+                    v.startDragAndDrop(data, shadowBuilder, v, 0);
+                    v.setVisibility(View.INVISIBLE); // Hide the original view during drag
+                    return true;
+                });
+        // Set long click listener for Giraffe
+                draggableGiraffe.setOnLongClickListener(v -> {
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+                    v.startDragAndDrop(data, shadowBuilder, v, 0);
+                    v.setVisibility(View.INVISIBLE); // Hide the original view during drag
+                    return true;
+                });
+
+        // Set long click listener for Zebra
+                draggableZebra.setOnLongClickListener(v -> {
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+                    v.startDragAndDrop(data, shadowBuilder, v, 0);
+                    v.setVisibility(View.INVISIBLE); // Hide the original view during drag
                     return true;
                 });
 

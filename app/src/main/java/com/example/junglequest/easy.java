@@ -40,7 +40,7 @@ public class easy extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_easy);
 
-        // Find the correct main layout ID
+        // Find the correct main layout ID - changed from hard_main to easy_main
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.hard_main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -71,11 +71,10 @@ public class easy extends AppCompatActivity {
         setupDraggable(draggableGiraffe, "giraffe");
         setupDraggable(draggableZebra, "zebra");
 
-        // Get the container layout
+        // Get the container layout - changed from hard_main to easy_main
         ConstraintLayout mainLayout = findViewById(R.id.hard_main);
 
         // Define white rectangle area relative to screen size (adjust these values to match your layout)
-        // These are approximate values based on the screenshot - adjust as needed
         mainLayout.post(() -> {
             int screenWidth = mainLayout.getWidth();
             int screenHeight = mainLayout.getHeight();
@@ -144,10 +143,26 @@ public class easy extends AppCompatActivity {
     private void checkPlacement(View view, String animalType, float x, float y) {
         if (whiteRectangleArea == null) return;
 
-        // Calculate if center of the animal is inside the white rectangle
-        float centerX = x + view.getWidth() / 2;
-        float centerY = y + view.getHeight() / 2;
-        boolean isInWhiteArea = whiteRectangleArea.contains((int)centerX, (int)centerY);
+        // Calculate if the view overlaps substantially with the white rectangle
+        // This is more reliable than just checking the center point
+        Rect viewRect = new Rect(
+                (int)x,
+                (int)y,
+                (int)(x + view.getWidth()),
+                (int)(y + view.getHeight())
+        );
+
+        // Calculate overlap percentage between view and target rectangle
+        Rect intersection = new Rect();
+        boolean intersects = intersection.setIntersect(whiteRectangleArea, viewRect);
+        boolean isInWhiteArea = false;
+
+        if (intersects) {
+            float overlap = (intersection.width() * intersection.height()) /
+                    (float)(view.getWidth() * view.getHeight());
+            // Consider it "in target" if at least 50% of the view is in the white rectangle
+            isInWhiteArea = overlap >= 0.5f;
+        }
 
         // Update the status for this animal
         switch (animalType) {
@@ -176,8 +191,17 @@ public class easy extends AppCompatActivity {
     private void checkWinCondition() {
         if (lionInTarget && tigerInTarget && elephantInTarget && giraffeInTarget && zebraInTarget) {
             // All animals are in the white rectangle, show winning screen
-            gameTimer.cancel();
-            setContentView(R.layout.activity_youwin);
+            if (gameTimer != null) {
+                gameTimer.cancel();  // Stop the timer
+            }
+            // Save the current time for scoring or display purposes if needed
+            long timeTaken = 60000 - timeLeftInMillis;
+
+            // Show winner screen
+            runOnUiThread(() -> {
+                setContentView(R.layout.activity_youwin);
+
+            });
         }
     }
 
@@ -197,6 +221,10 @@ public class easy extends AppCompatActivity {
 
     // Start the countdown timer
     private void startTimer() {
+        if (gameTimer != null) {
+            gameTimer.cancel();
+        }
+
         gameTimer = new CountDownTimer(timeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -207,18 +235,21 @@ public class easy extends AppCompatActivity {
             @Override
             public void onFinish() {
                 // Handle game over when timer expires
-                setContentView(R.layout.activity_timerunout);
-                timerTextView.setText("Time's Up!");
+                runOnUiThread(() -> {
+                    setContentView(R.layout.activity_timerunout);
+                });
             }
         }.start();
     }
 
     // Update the timer display
     private void updateTimerText() {
-        int minutes = (int) (timeLeftInMillis / 1000) / 60;
-        int seconds = (int) (timeLeftInMillis / 1000) % 60;
-        String timeFormatted = String.format("%02d:%02d", minutes, seconds);
-        timerTextView.setText(timeFormatted);
+        if (timerTextView != null) {
+            int minutes = (int) (timeLeftInMillis / 1000) / 60;
+            int seconds = (int) (timeLeftInMillis / 1000) % 60;
+            String timeFormatted = String.format("%02d:%02d", minutes, seconds);
+            timerTextView.setText(timeFormatted);
+        }
     }
 
     // Toggle pause state
@@ -229,7 +260,9 @@ public class easy extends AppCompatActivity {
             isPaused = false;
         } else {
             // Pause the game
-            gameTimer.cancel();
+            if (gameTimer != null) {
+                gameTimer.cancel();
+            }
             isPaused = true;
         }
     }
@@ -240,6 +273,16 @@ public class easy extends AppCompatActivity {
         if (gameTimer != null) {
             gameTimer.cancel();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isPaused) {
+            // Don't restart timer if game is deliberately paused
+            return;
+        }
+        startTimer();
     }
 
     @Override

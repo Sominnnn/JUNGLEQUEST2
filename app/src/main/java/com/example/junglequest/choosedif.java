@@ -23,6 +23,7 @@ public class choosedif extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         Button homeButton = findViewById(R.id.homebtn_choosedif);
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,12 +33,23 @@ public class choosedif extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         Button instructionsButton = findViewById(R.id.instructionbtn_choosedif);
         instructionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Navigate to CardCatalogActivity
                 Intent intent = new Intent(choosedif.this, aboutgame.class);
+                startActivity(intent);
+            }
+        });
+
+        Button leaderboardButton = findViewById(R.id.leaderboardbtn_choosedif);
+        leaderboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to CardCatalogActivity
+                Intent intent = new Intent(choosedif.this, leaderboard.class);
                 startActivity(intent);
             }
         });

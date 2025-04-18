@@ -54,5 +54,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button leaderboardButton = findViewById(R.id.leaderboardbtn_main);
+        leaderboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to CardCatalogActivity
+                Intent intent = new Intent(MainActivity.this, leaderboard.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

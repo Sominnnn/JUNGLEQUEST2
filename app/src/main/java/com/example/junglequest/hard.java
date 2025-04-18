@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.Rect;
+import android.app.Dialog;
+import android.view.Window;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +27,9 @@ public class hard extends AppCompatActivity {
     private CountDownTimer gameTimer;
     private TextView timerTextView;
     private boolean isPaused = false;
-    private long timeLeftInMillis = 60000; // 60 seconds
+    private long timeLeftInMillis = 120000; // 2 minutes
+    private static final long ONE_MINUTE_MILLIS = 60000; // 1 minute threshold
+    private boolean warningShown = false;
 
     // Track correct animal placements
     private HashMap<Integer, View> targetZones = new HashMap<>();
@@ -53,15 +57,15 @@ public class hard extends AppCompatActivity {
         Button pauseButton = findViewById(R.id.pausebtn_hard);
         pauseButton.setOnClickListener(v -> togglePause());
 
-        // Get the target habitat zones
-        View landZone = findViewById(R.id.landzone_hard);
+        // Get the target rectangle zones
         View seaZone = findViewById(R.id.waterzone_hard);
         View skyZone = findViewById(R.id.airzone_hard);
+        View landZone = findViewById(R.id.landzone_hard); // Added land zone
 
         // Add target zones to HashMap
-        targetZones.put(R.id.landzone_hard, landZone);
         targetZones.put(R.id.waterzone_hard, seaZone);
         targetZones.put(R.id.airzone_hard, skyZone);
+        targetZones.put(R.id.landzone_hard, landZone); // Added land zone to HashMap
 
         // Set up finish button
         finishButton = findViewById(R.id.donebtn_hard);
@@ -73,43 +77,39 @@ public class hard extends AppCompatActivity {
                 gameTimer.cancel();
             }
 
-            // Save time taken for display purposes if needed
-            long timeTaken = 60000 - timeLeftInMillis;
+            // Calculate time taken
+            long timeTaken = 120000 - timeLeftInMillis;
 
-            // Show winner screen
-            setContentView(R.layout.activity_youwin);
+            // Show appropriate completion screen based on time
+            if (timeLeftInMillis > ONE_MINUTE_MILLIS) {
+                // Completed with more than 1 minute remaining (finished in less than 1 minute)
+                showFastCompletionPopup();
+            } else {
+                // Completed with less than 1 minute remaining (between 1-2 minutes)
+                setContentView(R.layout.activity_youwin);
+            }
         });
 
         // Get the draggable animal ImageViews
-        // Land animals
-        ImageView draggableLion = findViewById(R.id.draghard_lion);
-        ImageView draggableTiger = findViewById(R.id.draghard_tiger);
-        ImageView draggableElephant = findViewById(R.id.draghard_elephant);
-        ImageView draggableGiraffe = findViewById(R.id.draghard_giraffe);
-        ImageView draggableZebra = findViewById(R.id.draghard_zebra);
-
-        // Sea animals
         ImageView draggableJellyfish = findViewById(R.id.draghard_jellyfish);
         ImageView draggableOctopus = findViewById(R.id.draghard_octopus);
         ImageView draggableShark = findViewById(R.id.draghard_shark);
         ImageView draggableStingray = findViewById(R.id.draghard_stingray);
         ImageView draggableWhale = findViewById(R.id.draghard_whale);
-
-        // Sky animals
         ImageView draggableEagle = findViewById(R.id.draghard_eagle);
         ImageView draggableFalcon = findViewById(R.id.draghard_falcon);
         ImageView draggablePigeon = findViewById(R.id.draghard_pigeon);
         ImageView draggableHummingbird = findViewById(R.id.draghard_hummingbird);
         ImageView draggableSwift = findViewById(R.id.draghard_swift);
 
-        // Define which animals belong to which zone
-        // Land animals
-        setupDraggable(draggableLion, R.id.landzone_hard);
-        setupDraggable(draggableTiger, R.id.landzone_hard);
-        setupDraggable(draggableElephant, R.id.landzone_hard);
-        setupDraggable(draggableGiraffe, R.id.landzone_hard);
-        setupDraggable(draggableZebra, R.id.landzone_hard);
+        // Add new land animals (repurposing some of the existing animals)
+        ImageView draggableLion = findViewById(R.id.draghard_lion);
+        ImageView draggableTiger = findViewById(R.id.draghard_tiger);
+        ImageView draggableElephant = findViewById(R.id.draghard_elephant);
+        ImageView draggableGiraffe = findViewById(R.id.draghard_giraffe);
+        ImageView draggableZebra = findViewById(R.id.draghard_zebra);
 
+        // Define which animals belong to which zone
         // Sea animals
         setupDraggable(draggableJellyfish, R.id.waterzone_hard);
         setupDraggable(draggableOctopus, R.id.waterzone_hard);
@@ -123,6 +123,13 @@ public class hard extends AppCompatActivity {
         setupDraggable(draggablePigeon, R.id.airzone_hard);
         setupDraggable(draggableHummingbird, R.id.airzone_hard);
         setupDraggable(draggableSwift, R.id.airzone_hard);
+
+        // Land animals
+        if (draggableLion != null) setupDraggable(draggableLion, R.id.landzone_hard);
+        if (draggableTiger != null) setupDraggable(draggableTiger, R.id.landzone_hard);
+        if (draggableElephant != null) setupDraggable(draggableElephant, R.id.landzone_hard);
+        if (draggableGiraffe != null) setupDraggable(draggableGiraffe, R.id.landzone_hard);
+        if (draggableZebra != null) setupDraggable(draggableZebra, R.id.landzone_hard);
 
         // Get the container layout - main is a ConstraintLayout, not an ImageView
         ConstraintLayout dropZone = findViewById(R.id.hard_main);
@@ -177,6 +184,45 @@ public class hard extends AppCompatActivity {
                     return false;
             }
         });
+    }
+
+    // Show popup when user completes the game within the first minute
+    private void showFastCompletionPopup() {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity_youwin);
+        dialog.setCancelable(false);
+
+        Button continueButton = dialog.findViewById(R.id.donebtn_hard);
+        continueButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            setContentView(R.layout.activity_youwin);
+        });
+
+        dialog.show();
+    }
+
+    // Show warning popup when time drops below 1 minute
+    private void showTimeWarningPopup() {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity_greatjob);
+
+        Button okButton = dialog.findViewById(R.id.donebtn_hard);
+        okButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            // Resume the timer if it was paused by the dialog
+            if (isPaused) {
+                togglePause();
+            }
+        });
+
+        // Pause the timer while showing the warning
+        if (!isPaused) {
+            togglePause();
+        }
+
+        dialog.show();
     }
 
     // Helper method to set up drag functionality
@@ -275,6 +321,12 @@ public class hard extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 timeLeftInMillis = millisUntilFinished;
                 updateTimerText();
+
+                // Check if time has just gone below 1 minute
+                if (millisUntilFinished < ONE_MINUTE_MILLIS && !warningShown) {
+                    warningShown = true;
+                    showTimeWarningPopup();
+                }
             }
 
             @Override

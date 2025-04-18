@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,7 +20,7 @@ public class easy extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_easy);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.medium_main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -78,7 +77,7 @@ public class easy extends AppCompatActivity {
                 });
 
         // Get the container layout - main is a ConstraintLayout, not an ImageView
-                ConstraintLayout dropZone = findViewById(R.id.main);
+                ConstraintLayout dropZone = findViewById(R.id.medium_main);
 
         // Set drag listener on the container layout
                 dropZone.setOnDragListener((v, event) -> {
@@ -106,7 +105,7 @@ public class easy extends AppCompatActivity {
                             // Make the view visible again
                             draggedView.setVisibility(View.VISIBLE);
                             return true;
-                        case DragEvent.ACTION_DRAG_ENDED:
+                            case DragEvent.ACTION_DRAG_ENDED:
                             // Ensure the view is visible if the drag ended without a drop
                             View view = (View) event.getLocalState();
                             if (view.getVisibility() == View.INVISIBLE) {

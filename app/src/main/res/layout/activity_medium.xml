@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/medium_main"
     android:background="@drawable/medium"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,4 +19,134 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.109" />
+
+    <ImageView
+        android:id="@+id/drag_jellyfish"
+        android:layout_width="49dp"
+        android:layout_height="66dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.071"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.834"
+        android:contentDescription="Draggable Jellyfish"
+        app:srcCompat="@drawable/water_jellyfish" />
+
+    <ImageView
+        android:id="@+id/drag_octopus"
+        android:layout_width="57dp"
+        android:layout_height="76dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.073"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.961"
+        android:contentDescription="Draggable Octopus"
+        app:srcCompat="@drawable/water_octopus" />
+
+    <ImageView
+        android:id="@+id/drag_shark"
+        android:layout_width="102dp"
+        android:layout_height="46dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.268"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.81"
+        android:contentDescription="Draggable Shark"
+        app:srcCompat="@drawable/water_shark" />
+
+    <ImageView
+        android:id="@+id/drag_stingray"
+        android:layout_width="68dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.279"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.882"
+        android:contentDescription="Draggable Stingray"
+        app:srcCompat="@drawable/water_stingray" />
+
+    <ImageView
+        android:id="@+id/drag_whale"
+        android:layout_width="97dp"
+        android:layout_height="58dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.305"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976"
+        android:contentDescription="Draggable Whale"
+        app:srcCompat="@drawable/water_whale" />
+
+    <ImageView
+        android:id="@+id/drag_eagle"
+        android:layout_width="117dp"
+        android:layout_height="39dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.656"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.802"
+        android:contentDescription="Draggable Eagle"
+        app:srcCompat="@drawable/air_eagle" />
+
+    <ImageView
+        android:id="@+id/drag_falcon"
+        android:layout_width="61dp"
+        android:layout_height="63dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.931"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.835"
+        android:contentDescription="Draggable Falcon"
+        app:srcCompat="@drawable/air_falcon" />
+
+    <ImageView
+        android:id="@+id/drag_hummingbird"
+        android:layout_width="69dp"
+        android:layout_height="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.962"
+        android:contentDescription="Draggable Hummingbird"
+        app:srcCompat="@drawable/air_hummingbird" />
+
+    <ImageView
+        android:id="@+id/drag_pigeon"
+        android:layout_width="75dp"
+        android:layout_height="41dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.574"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.884"
+        android:contentDescription="Draggable Pigeon"
+        app:srcCompat="@drawable/air_pigeon" />
+
+    <ImageView
+        android:id="@+id/drag_swift"
+        android:layout_width="98dp"
+        android:layout_height="63dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.677"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.985"
+        android:contentDescription="Draggable Swift "
+        app:srcCompat="@drawable/air_swift" />
 </androidx.constraintlayout.widget.ConstraintLayout>

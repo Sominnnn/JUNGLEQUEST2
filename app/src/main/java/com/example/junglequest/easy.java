@@ -46,7 +46,7 @@ public class easy extends AppCompatActivity {
         Button pauseButton = findViewById(R.id.pausebtn_easy);
         pauseButton.setOnClickListener(v -> togglePause());
 
-        // Set up finish button - ADD THIS BUTTON TO YOUR LAYOUT XML
+        // Set up finish button
         Button finishButton = findViewById(R.id.donebtn_easy);
         finishButton.setOnClickListener(v -> {
             // Stop the timer when finish button is clicked

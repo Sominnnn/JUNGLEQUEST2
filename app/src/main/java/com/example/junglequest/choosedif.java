@@ -57,7 +57,7 @@ public class choosedif extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to CardCatalogActivity
-                Intent intent = new Intent(choosedif.this, easy.class);
+                Intent intent = new Intent(choosedif.this, medium.class);
                 startActivity(intent);
             }
         });

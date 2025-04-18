@@ -102,7 +102,7 @@ public class medium extends AppCompatActivity {
         setupDraggable(draggableEagle, R.id.airzone);
         setupDraggable(draggableFalcon, R.id.airzone);
         setupDraggable(draggablePigeon, R.id.airzone);
-        setupDraggable(draggableHummingbird, R.id.airzone); 
+        setupDraggable(draggableHummingbird, R.id.airzone);
         setupDraggable(draggableSwift, R.id.airzone);
 
         // Get the container layout - main is a ConstraintLayout, not an ImageView

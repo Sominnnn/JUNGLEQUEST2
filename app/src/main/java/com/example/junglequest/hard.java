@@ -30,6 +30,7 @@ public class hard extends AppCompatActivity {
     private long timeLeftInMillis = 120000; // 2 minutes
     private static final long ONE_MINUTE_MILLIS = 60000; // 1 minute threshold
     private boolean warningShown = false;
+    private Dialog pauseDialog; // Dialog for pause menu
 
     // Track correct animal placements
     private HashMap<Integer, View> targetZones = new HashMap<>();
@@ -55,17 +56,17 @@ public class hard extends AppCompatActivity {
 
         // Set up pause button
         Button pauseButton = findViewById(R.id.pausebtn_hard);
-        pauseButton.setOnClickListener(v -> togglePause());
+        pauseButton.setOnClickListener(v -> showPauseMenu());
 
         // Get the target rectangle zones
         View seaZone = findViewById(R.id.waterzone_hard);
         View skyZone = findViewById(R.id.airzone_hard);
-        View landZone = findViewById(R.id.landzone_hard); // Added land zone
+        View landZone = findViewById(R.id.landzone_hard);
 
         // Add target zones to HashMap
         targetZones.put(R.id.waterzone_hard, seaZone);
         targetZones.put(R.id.airzone_hard, skyZone);
-        targetZones.put(R.id.landzone_hard, landZone); // Added land zone to HashMap
+        targetZones.put(R.id.landzone_hard, landZone);
 
         // Set up finish button
         finishButton = findViewById(R.id.donebtn_hard);
@@ -77,17 +78,8 @@ public class hard extends AppCompatActivity {
                 gameTimer.cancel();
             }
 
-            // Calculate time taken
-            long timeTaken = 120000 - timeLeftInMillis;
-
-            // Show appropriate completion screen based on time
-            if (timeLeftInMillis > ONE_MINUTE_MILLIS) {
-                // Completed with more than 1 minute remaining (finished in less than 1 minute)
-                showFastCompletionPopup();
-            } else {
-                // Completed with less than 1 minute remaining (between 1-2 minutes)
-                setContentView(R.layout.activity_youwin);
-            }
+            // Show win screen directly without any popups regardless of time remaining
+            setContentView(R.layout.activity_youwin);
         });
 
         // Get the draggable animal ImageViews
@@ -184,22 +176,86 @@ public class hard extends AppCompatActivity {
                     return false;
             }
         });
+
+        // Initialize pause dialog
+        initializePauseDialog();
     }
 
-    // Show popup when user completes the game within the first minute
-    private void showFastCompletionPopup() {
-        Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.activity_youwin);
-        dialog.setCancelable(false);
+    // Initialize pause dialog
+    private void initializePauseDialog() {
+        pauseDialog = new Dialog(this);
+        pauseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pauseDialog.setContentView(R.layout.activity_pause);
+        pauseDialog.setCancelable(false);
 
-        Button continueButton = dialog.findViewById(R.id.donebtn_hard);
-        continueButton.setOnClickListener(v -> {
-            dialog.dismiss();
-            setContentView(R.layout.activity_youwin);
+        // Setup buttons in the pause menu
+        Button resumeButton = pauseDialog.findViewById(R.id.continuebtn_pause);
+        Button restartButton = pauseDialog.findViewById(R.id.restartbtn_pause);
+        Button quitButton = pauseDialog.findViewById(R.id.exitbtn_pause);
+
+        // Resume button returns to game
+        resumeButton.setOnClickListener(v -> {
+            pauseDialog.dismiss();
+            resumeGame();
         });
 
-        dialog.show();
+        // Restart button resets the game
+        restartButton.setOnClickListener(v -> {
+            pauseDialog.dismiss();
+            restartGame();
+        });
+
+        // Quit button returns to main menu
+        quitButton.setOnClickListener(v -> {
+            pauseDialog.dismiss();
+            quitToMainMenu();
+        });
+    }
+
+    // Show pause menu dialog
+    private void showPauseMenu() {
+        // Pause the game
+        pauseGame();
+
+        // Show the pause dialog
+        pauseDialog.show();
+    }
+
+    // Pause the game
+    private void pauseGame() {
+        if (!isPaused) {
+            if (gameTimer != null) {
+                gameTimer.cancel();
+            }
+            isPaused = true;
+        }
+    }
+
+    // Resume the game
+    private void resumeGame() {
+        if (isPaused) {
+            startTimer();
+            isPaused = false;
+        }
+    }
+
+    // Restart the game
+    private void restartGame() {
+        // Reset the timer
+        timeLeftInMillis = 120000;
+        warningShown = false;
+        isPaused = false;
+
+        // Restart the activity
+        recreate();
+    }
+
+    // Return to main menu
+    private void quitToMainMenu() {
+        // Navigate to the main menu activity
+        finish(); // Close this activity
+        // If you have a specific navigation, use it here
+        // For example: startActivity(new Intent(this, MainActivity.class));
     }
 
     // Show warning popup when time drops below 1 minute
@@ -213,14 +269,12 @@ public class hard extends AppCompatActivity {
             dialog.dismiss();
             // Resume the timer if it was paused by the dialog
             if (isPaused) {
-                togglePause();
+                resumeGame();
             }
         });
 
         // Pause the timer while showing the warning
-        if (!isPaused) {
-            togglePause();
-        }
+        pauseGame();
 
         dialog.show();
     }
@@ -347,21 +401,6 @@ public class hard extends AppCompatActivity {
         }
     }
 
-    // Toggle pause state
-    private void togglePause() {
-        if (isPaused) {
-            // Resume the game
-            startTimer();
-            isPaused = false;
-        } else {
-            // Pause the game
-            if (gameTimer != null) {
-                gameTimer.cancel();
-            }
-            isPaused = true;
-        }
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -386,5 +425,15 @@ public class hard extends AppCompatActivity {
         if (gameTimer != null) {
             gameTimer.cancel();
         }
+        if (pauseDialog != null && pauseDialog.isShowing()) {
+            pauseDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Show pause menu when back button is pressed instead of exiting
+        super.onBackPressed();
+        showPauseMenu();
     }
 }

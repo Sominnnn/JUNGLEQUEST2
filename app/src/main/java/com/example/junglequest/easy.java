@@ -1,7 +1,6 @@
 package com.example.junglequest;
 
 import android.content.ClipData;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.DragEvent;
@@ -24,23 +23,13 @@ public class easy extends AppCompatActivity {
     private boolean isPaused = false;
     private long timeLeftInMillis = 60000; // 60 seconds
 
-    // Rectangle area for animals (will define this based on screen dimensions)
-    private Rect whiteRectangleArea;
-
-    // Track which animals are in the target area
-    private boolean lionInTarget = false;
-    private boolean tigerInTarget = false;
-    private boolean elephantInTarget = false;
-    private boolean giraffeInTarget = false;
-    private boolean zebraInTarget = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_easy);
 
-        // Find the correct main layout ID - changed from hard_main to easy_main
+        // Find the correct main layout ID
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.hard_main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -59,7 +48,18 @@ public class easy extends AppCompatActivity {
 
         // Set up finish button - ADD THIS BUTTON TO YOUR LAYOUT XML
         Button finishButton = findViewById(R.id.donebtn_easy);
-        finishButton.setOnClickListener(v -> checkWinCondition());
+        finishButton.setOnClickListener(v -> {
+            // Stop the timer when finish button is clicked
+            if (gameTimer != null) {
+                gameTimer.cancel();
+            }
+
+            // Save time taken for display purposes if needed
+            long timeTaken = 60000 - timeLeftInMillis;
+
+            // Show winner screen
+            setContentView(R.layout.activity_youwin);
+        });
 
         // Get the draggable animal ImageViews
         ImageView draggableLion = findViewById(R.id.drag_lion);
@@ -69,28 +69,14 @@ public class easy extends AppCompatActivity {
         ImageView draggableZebra = findViewById(R.id.drag_zebra);
 
         // Set up drag functionality for all images
-        setupDraggable(draggableLion, "lion");
-        setupDraggable(draggableTiger, "tiger");
-        setupDraggable(draggableElephant, "elephant");
-        setupDraggable(draggableGiraffe, "giraffe");
-        setupDraggable(draggableZebra, "zebra");
+        setupDraggable(draggableLion);
+        setupDraggable(draggableTiger);
+        setupDraggable(draggableElephant);
+        setupDraggable(draggableGiraffe);
+        setupDraggable(draggableZebra);
 
-        // Get the container layout - changed from hard_main to easy_main
+        // Get the container layout
         ConstraintLayout mainLayout = findViewById(R.id.hard_main);
-
-        // Define white rectangle area relative to screen size (adjust these values to match your layout)
-        mainLayout.post(() -> {
-            int screenWidth = mainLayout.getWidth();
-            int screenHeight = mainLayout.getHeight();
-
-            // Define white rectangle area (adjust these percentages to match your layout)
-            int rectLeft = (int)(screenWidth * 0.05);  // 5% from left
-            int rectTop = (int)(screenHeight * 0.25);  // 25% from top
-            int rectRight = (int)(screenWidth * 0.95); // 95% from left (5% from right)
-            int rectBottom = (int)(screenHeight * 0.45); // 45% from top
-
-            whiteRectangleArea = new Rect(rectLeft, rectTop, rectRight, rectBottom);
-        });
 
         // Set drag listener on the container layout
         mainLayout.setOnDragListener((v, event) -> {
@@ -106,7 +92,6 @@ public class easy extends AppCompatActivity {
                 case DragEvent.ACTION_DROP:
                     // Get the dragged view
                     View draggedView = (View) event.getLocalState();
-                    String animalType = (String) draggedView.getTag();
 
                     // Calculate position adjusted for the view's width/height
                     float dropX = event.getX() - (draggedView.getWidth() / 2);
@@ -124,9 +109,6 @@ public class easy extends AppCompatActivity {
                     draggedView.setX(dropX);
                     draggedView.setY(dropY);
 
-                    // Check if animal is in the white rectangle area (but don't trigger win condition automatically)
-                    updateAnimalPosition(draggedView, animalType, dropX, dropY);
-
                     // Make the view visible again
                     draggedView.setVisibility(View.VISIBLE);
                     return true;
@@ -143,71 +125,8 @@ public class easy extends AppCompatActivity {
         });
     }
 
-    // Update animal position status without checking win condition
-    private void updateAnimalPosition(View view, String animalType, float x, float y) {
-        if (whiteRectangleArea == null) return;
-
-        // Calculate if the view overlaps substantially with the white rectangle
-        // This is more reliable than just checking the center point
-        Rect viewRect = new Rect(
-                (int)x,
-                (int)y,
-                (int)(x + view.getWidth()),
-                (int)(y + view.getHeight())
-        );
-
-        // Calculate overlap percentage between view and target rectangle
-        Rect intersection = new Rect();
-        boolean intersects = intersection.setIntersect(whiteRectangleArea, viewRect);
-        boolean isInWhiteArea = false;
-
-        if (intersects) {
-            float overlap = (intersection.width() * intersection.height()) /
-                    (float)(view.getWidth() * view.getHeight());
-            // Consider it "in target" if at least 50% of the view is in the white rectangle
-            isInWhiteArea = overlap >= 0.5f;
-        }
-
-        // Update the status for this animal
-        switch (animalType) {
-            case "lion":
-                lionInTarget = isInWhiteArea;
-                break;
-            case "tiger":
-                tigerInTarget = isInWhiteArea;
-                break;
-            case "elephant":
-                elephantInTarget = isInWhiteArea;
-                break;
-            case "giraffe":
-                giraffeInTarget = isInWhiteArea;
-                break;
-            case "zebra":
-                zebraInTarget = isInWhiteArea;
-                break;
-        }
-    }
-
-    // Check if player has won (all animals in the white rectangle) - Called when finish button is clicked
-    private void checkWinCondition() {
-        if (lionInTarget && tigerInTarget && elephantInTarget && giraffeInTarget && zebraInTarget) {
-            // All animals are in the white rectangle, show winning screen
-            if (gameTimer != null) {
-                gameTimer.cancel();  // Stop the timer
-            }
-            // Save the current time for scoring or display purposes if needed
-            long timeTaken = 60000 - timeLeftInMillis;
-
-            // Show winner screen
-            setContentView(R.layout.activity_youwin);
-        }
-    }
-
     // Helper method to set up drag functionality
-    private void setupDraggable(ImageView view, String animalType) {
-        // Set tag to identify animal type
-        view.setTag(animalType);
-
+    private void setupDraggable(ImageView view) {
         view.setOnLongClickListener(v -> {
             ClipData data = ClipData.newPlainText("", "");
             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);

@@ -78,8 +78,15 @@ public class hard extends AppCompatActivity {
                 gameTimer.cancel();
             }
 
-            // Show win screen directly without any popups regardless of time remaining
-            setContentView(R.layout.activity_youwin);
+            // Show different completion screens based on time remaining
+            if (timeLeftInMillis > ONE_MINUTE_MILLIS) {
+                // Completed with more than 1 minute remaining (finished in less than 1 minute)
+                // Show a special "fast completion" layout
+                setContentView(R.layout.activity_greatjob);
+            } else {
+                // Completed with less than 1 minute remaining (between 1-2 minutes)
+                setContentView(R.layout.activity_youwin);
+            }
         });
 
         // Get the draggable animal ImageViews

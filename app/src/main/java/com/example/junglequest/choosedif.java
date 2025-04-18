@@ -62,5 +62,15 @@ public class choosedif extends AppCompatActivity {
             }
         });
 
+        Button hardButton = findViewById(R.id.hardbtn_choosedif);
+        hardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to CardCatalogActivity
+                Intent intent = new Intent(choosedif.this, hard.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

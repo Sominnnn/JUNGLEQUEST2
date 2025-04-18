@@ -20,7 +20,7 @@ public class easy extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_easy);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.medium_main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.hard_main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -77,7 +77,7 @@ public class easy extends AppCompatActivity {
                 });
 
         // Get the container layout - main is a ConstraintLayout, not an ImageView
-                ConstraintLayout dropZone = findViewById(R.id.medium_main);
+                ConstraintLayout dropZone = findViewById(R.id.hard_main);
 
         // Set drag listener on the container layout
                 dropZone.setOnDragListener((v, event) -> {

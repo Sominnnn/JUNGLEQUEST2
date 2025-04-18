@@ -2,11 +2,206 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/medium_main"
+    android:id="@+id/hard_main"
     android:background="@drawable/hard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".hard">
+
+    <ImageView
+        android:id="@+id/draghard_elephant"
+        android:layout_width="70dp"
+        android:layout_height="51dp"
+        android:contentDescription="Draggable Elephant"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.979"
+        app:srcCompat="@drawable/elephant_land" />
+
+    <ImageView
+        android:id="@+id/draghard_tiger"
+        android:layout_width="66dp"
+        android:layout_height="46dp"
+        android:contentDescription="Draggable Tiger"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.197"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.893"
+        app:srcCompat="@drawable/tiger_land" />
+
+    <ImageView
+        android:id="@+id/draghard_zebra"
+        android:layout_width="56dp"
+        android:layout_height="43dp"
+        android:contentDescription="Draggable Zebra"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.143"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.806"
+        app:srcCompat="@drawable/zebra_land" />
+
+    <ImageView
+        android:id="@+id/draghard_lion"
+        android:layout_width="60dp"
+        android:layout_height="43dp"
+        android:contentDescription="Draggable Animal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.715"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.809"
+        app:srcCompat="@drawable/lion_land" />
+
+    <ImageView
+        android:id="@+id/draghard_giraffe"
+        android:layout_width="69dp"
+        android:layout_height="82dp"
+        android:contentDescription="Draggable Giraffe"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.862"
+        app:srcCompat="@drawable/giraffe_land" />
+
+    <ImageView
+        android:id="@+id/draghard_jellyfish"
+        android:layout_width="29dp"
+        android:layout_height="51dp"
+        android:contentDescription="Draggable Jellyfish"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.015"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.816"
+        app:srcCompat="@drawable/water_jellyfish" />
+
+    <ImageView
+        android:id="@+id/draghard_stingray"
+        android:layout_width="68dp"
+        android:layout_height="40dp"
+        android:contentDescription="Draggable Stingray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.682"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.882"
+        app:srcCompat="@drawable/water_stingray" />
+
+    <ImageView
+        android:id="@+id/draghard_pigeon"
+        android:layout_width="75dp"
+        android:layout_height="41dp"
+        android:contentDescription="Draggable Pigeon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.017"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.963"
+        app:srcCompat="@drawable/air_pigeon" />
+
+    <ImageView
+        android:id="@+id/draghard_shark"
+        android:layout_width="67dp"
+        android:layout_height="35dp"
+        android:contentDescription="Draggable Shark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.955"
+        app:srcCompat="@drawable/water_shark" />
+
+    <ImageView
+        android:id="@+id/draghard_swift"
+        android:layout_width="49dp"
+        android:layout_height="38dp"
+        android:contentDescription="Draggable Swift "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.016"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.883"
+        app:srcCompat="@drawable/air_swift" />
+
+    <ImageView
+        android:id="@+id/draghard_falcon"
+        android:layout_width="38dp"
+        android:layout_height="40dp"
+        android:contentDescription="Draggable Falcon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.707"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.963"
+        app:srcCompat="@drawable/air_falcon" />
+
+    <ImageView
+        android:id="@+id/draghard_eagle"
+        android:layout_width="67dp"
+        android:layout_height="29dp"
+        android:contentDescription="Draggable Eagle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.884"
+        app:srcCompat="@drawable/air_eagle" />
+
+    <ImageView
+        android:id="@+id/draghard_hummingbird"
+        android:layout_width="46dp"
+        android:layout_height="44dp"
+        android:contentDescription="Draggable Hummingbird"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.534"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.807"
+        app:srcCompat="@drawable/air_hummingbird" />
+
+    <ImageView
+        android:id="@+id/draghard_whale"
+        android:layout_width="61dp"
+        android:layout_height="39dp"
+        android:contentDescription="Draggable Whale"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.963"
+        app:srcCompat="@drawable/water_whale" />
+
+    <ImageView
+        android:id="@+id/draghard_octopus"
+        android:layout_width="35dp"
+        android:layout_height="51dp"
+        android:contentDescription="Draggable Octopus"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.369"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.814"
+        app:srcCompat="@drawable/water_octopus" />
 
     <Button
         android:id="@+id/pausebtn_hard"

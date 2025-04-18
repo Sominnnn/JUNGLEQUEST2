@@ -133,6 +133,7 @@ public class easy extends AppCompatActivity {
             @Override
             public void onFinish() {
                 // Handle game over when timer expires
+                setContentView(R.layout.activity_timerunout);
                 timerTextView.setText("Time's Up!");
                 // You can add game over logic here
             }

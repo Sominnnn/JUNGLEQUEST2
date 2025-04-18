@@ -190,7 +190,7 @@ public class hard extends AppCompatActivity {
 
     // Initialize pause dialog
     private void initializePauseDialog() {
-        pauseDialog = new Dialog(this);
+        pauseDialog = new Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
         pauseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pauseDialog.setContentView(R.layout.activity_pause);
         pauseDialog.setCancelable(false);
@@ -263,27 +263,6 @@ public class hard extends AppCompatActivity {
         finish(); // Close this activity
         // If you have a specific navigation, use it here
         // For example: startActivity(new Intent(this, MainActivity.class));
-    }
-
-    // Show warning popup when time drops below 1 minute
-    private void showTimeWarningPopup() {
-        Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.activity_greatjob);
-
-        Button okButton = dialog.findViewById(R.id.donebtn_hard);
-        okButton.setOnClickListener(v -> {
-            dialog.dismiss();
-            // Resume the timer if it was paused by the dialog
-            if (isPaused) {
-                resumeGame();
-            }
-        });
-
-        // Pause the timer while showing the warning
-        pauseGame();
-
-        dialog.show();
     }
 
     // Helper method to set up drag functionality
@@ -383,10 +362,13 @@ public class hard extends AppCompatActivity {
                 timeLeftInMillis = millisUntilFinished;
                 updateTimerText();
 
-                // Check if time has just gone below 1 minute
+                // REMOVED the popup warning that was causing the crash
+                // Just change the text color to red when less than a minute remains
                 if (millisUntilFinished < ONE_MINUTE_MILLIS && !warningShown) {
                     warningShown = true;
-                    showTimeWarningPopup();
+                    if (timerTextView != null) {
+                        timerTextView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                    }
                 }
             }
 
@@ -440,7 +422,6 @@ public class hard extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Show pause menu when back button is pressed instead of exiting
-        super.onBackPressed();
         showPauseMenu();
     }
 }

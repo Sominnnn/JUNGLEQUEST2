@@ -57,6 +57,10 @@ public class easy extends AppCompatActivity {
         Button pauseButton = findViewById(R.id.pausebtn_easy);
         pauseButton.setOnClickListener(v -> togglePause());
 
+        // Set up finish button - ADD THIS BUTTON TO YOUR LAYOUT XML
+        Button finishButton = findViewById(R.id.donebtn_easy);
+        finishButton.setOnClickListener(v -> checkWinCondition());
+
         // Get the draggable animal ImageViews
         ImageView draggableLion = findViewById(R.id.drag_lion);
         ImageView draggableTiger = findViewById(R.id.drag_tiger);
@@ -120,8 +124,8 @@ public class easy extends AppCompatActivity {
                     draggedView.setX(dropX);
                     draggedView.setY(dropY);
 
-                    // Check if animal is in the white rectangle area
-                    checkPlacement(draggedView, animalType, dropX, dropY);
+                    // Check if animal is in the white rectangle area (but don't trigger win condition automatically)
+                    updateAnimalPosition(draggedView, animalType, dropX, dropY);
 
                     // Make the view visible again
                     draggedView.setVisibility(View.VISIBLE);
@@ -139,8 +143,8 @@ public class easy extends AppCompatActivity {
         });
     }
 
-    // Check if animal is in the white rectangle area
-    private void checkPlacement(View view, String animalType, float x, float y) {
+    // Update animal position status without checking win condition
+    private void updateAnimalPosition(View view, String animalType, float x, float y) {
         if (whiteRectangleArea == null) return;
 
         // Calculate if the view overlaps substantially with the white rectangle
@@ -182,12 +186,9 @@ public class easy extends AppCompatActivity {
                 zebraInTarget = isInWhiteArea;
                 break;
         }
-
-        // Check if all animals are in the white rectangle
-        checkWinCondition();
     }
 
-    // Check if player has won (all animals in the white rectangle)
+    // Check if player has won (all animals in the white rectangle) - Called when finish button is clicked
     private void checkWinCondition() {
         if (lionInTarget && tigerInTarget && elephantInTarget && giraffeInTarget && zebraInTarget) {
             // All animals are in the white rectangle, show winning screen
@@ -198,10 +199,7 @@ public class easy extends AppCompatActivity {
             long timeTaken = 60000 - timeLeftInMillis;
 
             // Show winner screen
-            runOnUiThread(() -> {
-                setContentView(R.layout.activity_youwin);
-
-            });
+            setContentView(R.layout.activity_youwin);
         }
     }
 
@@ -235,9 +233,7 @@ public class easy extends AppCompatActivity {
             @Override
             public void onFinish() {
                 // Handle game over when timer expires
-                runOnUiThread(() -> {
-                    setContentView(R.layout.activity_timerunout);
-                });
+                setContentView(R.layout.activity_timerunout);
             }
         }.start();
     }

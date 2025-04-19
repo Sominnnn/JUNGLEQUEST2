@@ -1,6 +1,7 @@
 package com.example.junglequest;
 
 import android.content.ClipData;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.DragEvent;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.Rect;
+import android.app.Dialog;
+import android.view.Window;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +30,10 @@ public class medium extends AppCompatActivity {
     private boolean isPaused = false;
     private long timeLeftInMillis = 90000; // 1 minute and 30 seconds
     private long startTimeInMillis = 90000; // Store the initial time
+    private static final long ONE_MINUTE_MILLIS = 60000; // 1 minute threshold
+    private static final long FORTY_FIVE_SECONDS_MILLIS = 45000; // 45 seconds threshold
+    private boolean warningShown = false;
+    private Dialog pauseDialog; // Dialog for pause menu
 
     // Track correct animal placements
     private HashMap<Integer, View> targetZones = new HashMap<>();
@@ -52,7 +59,7 @@ public class medium extends AppCompatActivity {
 
         // Set up pause button
         Button pauseButton = findViewById(R.id.pausebtn_medium);
-        pauseButton.setOnClickListener(v -> togglePause());
+        pauseButton.setOnClickListener(v -> showPauseMenu());
 
         // Get the target rectangle zones
         View seaZone = findViewById(R.id.waterzone);
@@ -76,15 +83,15 @@ public class medium extends AppCompatActivity {
             long timeTaken = startTimeInMillis - timeLeftInMillis;
 
             // Check time-based conditions for different endings
-            if (timeTaken < 45000) { // Less than 45 seconds
+            if (timeTaken < FORTY_FIVE_SECONDS_MILLIS) { // Less than 45 seconds
                 // Show great job screen
-                setContentView(R.layout.activity_greatjob);
-            } else if (timeTaken <= 60000) { // Between 45 seconds and 1 minute
+                showGreatJobScreen();
+            } else if (timeTaken <= ONE_MINUTE_MILLIS) { // Between 45 seconds and 1 minute
                 // Show winner screen
-                setContentView(R.layout.activity_youwin);
-            } else { // More than 1th minute but within time limit
+                showWinScreen();
+            } else { // More than 1 minute but within time limit
                 // Show regular completion screen
-                setContentView(R.layout.activity_youwin);
+                showWinScreen();
             }
         });
 
@@ -115,7 +122,7 @@ public class medium extends AppCompatActivity {
         setupDraggable(draggableHummingbird, R.id.airzone);
         setupDraggable(draggableSwift, R.id.airzone);
 
-        // Get the container layout - main is a ConstraintLayout, not an ImageView
+        // Get the container layout - main is a ConstraintLayout
         ConstraintLayout dropZone = findViewById(R.id.hard_main);
 
         // Set drag listener on the container layout
@@ -168,6 +175,160 @@ public class medium extends AppCompatActivity {
                     return false;
             }
         });
+
+        // Initialize pause dialog
+        initializePauseDialog();
+    }
+
+    // Show win screen with clickable buttons
+    private void showWinScreen() {
+        setContentView(R.layout.activity_youwin);
+
+        // Set up button click listeners on the win screen
+        Button homeButton = findViewById(R.id.homebtn_youwin);
+        Button instructionsButton = findViewById(R.id.instructionbtn_youwin);
+        Button leaderboardsButton = findViewById(R.id.leaderboardbtn_youwin2);
+
+        if (homeButton != null) {
+            homeButton.setOnClickListener(v -> {
+                // Navigate to home/main menu
+                Intent intent = new Intent(medium.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+
+        if (instructionsButton != null) {
+            instructionsButton.setOnClickListener(v -> {
+                // Navigate to instructions screen
+                Intent intent = new Intent(medium.this, choosedif.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+
+        if (leaderboardsButton != null) {
+            leaderboardsButton.setOnClickListener(v -> {
+                // Navigate to leaderboards screen
+                Intent intent = new Intent(medium.this, leaderboard.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+    }
+
+    // Show great job screen with clickable buttons
+    private void showGreatJobScreen() {
+        setContentView(R.layout.activity_greatjob);
+
+        // Set up button click listeners on the great job screen
+        Button homeButton = findViewById(R.id.homebtn_greatjob);
+        Button instructionsButton = findViewById(R.id.playagainbtn_greatjob);
+        Button leaderboardsButton = findViewById(R.id.leaderoardbtn_greatjob);
+
+        if (homeButton != null) {
+            homeButton.setOnClickListener(v -> {
+                // Navigate to home/main menu
+                Intent intent = new Intent(medium.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+
+        if (instructionsButton != null) {
+            instructionsButton.setOnClickListener(v -> {
+                // Navigate to instructions screen
+                Intent intent = new Intent(medium.this, choosedif.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+
+        if (leaderboardsButton != null) {
+            leaderboardsButton.setOnClickListener(v -> {
+                // Navigate to leaderboards screen
+                Intent intent = new Intent(medium.this, leaderboard.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+    }
+
+    // Initialize pause dialog
+    private void initializePauseDialog() {
+        pauseDialog = new Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
+        pauseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pauseDialog.setContentView(R.layout.activity_pause);
+        pauseDialog.setCancelable(false);
+
+        // Setup buttons in the pause menu
+        Button resumeButton = pauseDialog.findViewById(R.id.continuebtn_pause);
+        Button restartButton = pauseDialog.findViewById(R.id.restartbtn_pause);
+        Button quitButton = pauseDialog.findViewById(R.id.exitbtn_pause);
+
+        // Resume button returns to game
+        resumeButton.setOnClickListener(v -> {
+            pauseDialog.dismiss();
+            resumeGame();
+        });
+
+        // Restart button resets the game
+        restartButton.setOnClickListener(v -> {
+            pauseDialog.dismiss();
+            restartGame();
+        });
+
+        // Quit button returns to main menu
+        quitButton.setOnClickListener(v -> {
+            pauseDialog.dismiss();
+            quitToMainMenu();
+        });
+    }
+
+    // Show pause menu dialog
+    private void showPauseMenu() {
+        // Pause the game
+        pauseGame();
+
+        // Show the pause dialog
+        pauseDialog.show();
+    }
+
+    // Pause the game
+    private void pauseGame() {
+        if (!isPaused) {
+            if (gameTimer != null) {
+                gameTimer.cancel();
+            }
+            isPaused = true;
+        }
+    }
+
+    // Resume the game
+    private void resumeGame() {
+        if (isPaused) {
+            startTimer();
+            isPaused = false;
+        }
+    }
+
+    // Restart the game
+    private void restartGame() {
+        // Reset the timer
+        timeLeftInMillis = 90000;
+        warningShown = false;
+        isPaused = false;
+
+        // Restart the activity
+        recreate();
+    }
+
+    // Return to main menu
+    private void quitToMainMenu() {
+        // Navigate to the main menu activity
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish(); // Close this activity
     }
 
     // Helper method to set up drag functionality
@@ -187,6 +348,10 @@ public class medium extends AppCompatActivity {
     // Check if the animal is placed in its correct zone
     private void checkAnimalPlacement(View animal) {
         int animalId = animal.getId();
+        if (!correctPlacements.containsKey(animalId)) {
+            return; // Skip if this isn't a tracked animal
+        }
+
         int correctZoneId = correctPlacements.get(animalId);
 
         // Create rectangles to check for intersection
@@ -266,12 +431,38 @@ public class medium extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 timeLeftInMillis = millisUntilFinished;
                 updateTimerText();
+
+                // Change the text color to red when less than 20 seconds remain (~22% of medium mode time)
+                if (millisUntilFinished < 20000 && !warningShown) {
+                    warningShown = true;
+                    if (timerTextView != null) {
+                        timerTextView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                    }
+                }
             }
 
             @Override
             public void onFinish() {
                 // Handle game over when timer expires
                 setContentView(R.layout.activity_timerunout);
+
+                // Add click listeners to buttons on time run out screen
+                Button homeButton = findViewById(R.id.homebtn_timerunout);
+                Button restartButton = findViewById(R.id.instructionbtn_timerunout);
+
+                if (homeButton != null) {
+                    homeButton.setOnClickListener(v -> {
+                        Intent intent = new Intent(medium.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    });
+                }
+
+                if (restartButton != null) {
+                    restartButton.setOnClickListener(v -> {
+                        restartGame();
+                    });
+                }
             }
         }.start();
     }
@@ -283,21 +474,6 @@ public class medium extends AppCompatActivity {
             int seconds = (int) (timeLeftInMillis / 1000) % 60;
             String timeFormatted = String.format("%02d:%02d", minutes, seconds);
             timerTextView.setText(timeFormatted);
-        }
-    }
-
-    // Toggle pause state
-    private void togglePause() {
-        if (isPaused) {
-            // Resume the game
-            startTimer();
-            isPaused = false;
-        } else {
-            // Pause the game
-            if (gameTimer != null) {
-                gameTimer.cancel();
-            }
-            isPaused = true;
         }
     }
 
@@ -325,5 +501,14 @@ public class medium extends AppCompatActivity {
         if (gameTimer != null) {
             gameTimer.cancel();
         }
+        if (pauseDialog != null && pauseDialog.isShowing()) {
+            pauseDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Show pause menu when back button is pressed instead of exiting
+        showPauseMenu();
     }
 }

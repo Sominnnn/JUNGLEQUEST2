@@ -33,8 +33,9 @@ public class medium extends AppCompatActivity {
     private boolean warningShown = false;
     private Dialog pauseDialog; // Dialog for pause menu
 
-    // Track time spent in the game
-    private long startTime;
+    // Track elapsed time directly
+    private long startTimeInMillis = 90000; // Initial time
+    private long elapsedTimeInMillis = 0; // Time elapsed so far
 
     // Track correct animal placements
     private HashMap<Integer, View> targetZones = new HashMap<>();
@@ -52,11 +53,11 @@ public class medium extends AppCompatActivity {
             return insets;
         });
 
+        // Reset elapsed time at start
+        elapsedTimeInMillis = 0;
+
         // Set up timer
         timerTextView = findViewById(R.id.timer_medium);
-
-        // Record start time when the game begins
-        startTime = System.currentTimeMillis();
 
         // Initialize and start the timer
         startTimer();
@@ -83,15 +84,18 @@ public class medium extends AppCompatActivity {
                 gameTimer.cancel();
             }
 
-            // Calculate time taken to complete the game
-            long timeElapsed = System.currentTimeMillis() - startTime;
+            // Calculate total elapsed time
+            elapsedTimeInMillis = startTimeInMillis - timeLeftInMillis;
 
-            // Check time-based conditions for different endings
-            if (timeElapsed < FORTY_FIVE_SECONDS_MILLIS) {
-                // Show great job screen if completed in less than 45 seconds
+            // Debug toast to verify the elapsed time
+            Toast.makeText(this, "Time taken: " + (elapsedTimeInMillis / 1000) + " seconds", Toast.LENGTH_SHORT).show();
+
+            // Show different completion screens based on elapsed time
+            if (elapsedTimeInMillis < FORTY_FIVE_SECONDS_MILLIS) {
+                // Completed in less than 45 seconds
                 showGreatJobScreen();
             } else {
-                // Show regular completion screen if it took 45 seconds or more
+                // Completed in 45 seconds or more
                 showWinScreen();
             }
         });
@@ -317,11 +321,9 @@ public class medium extends AppCompatActivity {
     private void restartGame() {
         // Reset the timer
         timeLeftInMillis = 90000;
+        elapsedTimeInMillis = 0;
         warningShown = false;
         isPaused = false;
-
-        // Reset start time
-        startTime = System.currentTimeMillis();
 
         // Restart the activity
         recreate();
@@ -435,6 +437,9 @@ public class medium extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 timeLeftInMillis = millisUntilFinished;
                 updateTimerText();
+
+                // Update the elapsed time
+                elapsedTimeInMillis = startTimeInMillis - timeLeftInMillis;
 
                 // Change the text color to red when less than 20 seconds remain (~22% of medium mode time)
                 if (millisUntilFinished < 20000 && !warningShown) {

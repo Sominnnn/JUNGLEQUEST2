@@ -86,10 +86,7 @@ public class medium extends AppCompatActivity {
             if (timeTaken < FORTY_FIVE_SECONDS_MILLIS) { // Less than 45 seconds
                 // Show great job screen
                 showGreatJobScreen();
-            } else if (timeTaken <= ONE_MINUTE_MILLIS) { // Between 45 seconds and 1 minute
-                // Show winner screen
-                showWinScreen();
-            } else { // More than 1 minute but within time limit
+            } else { // 45 seconds or more
                 // Show regular completion screen
                 showWinScreen();
             }

@@ -29,11 +29,12 @@ public class medium extends AppCompatActivity {
     private TextView timerTextView;
     private boolean isPaused = false;
     private long timeLeftInMillis = 90000; // 1 minute and 30 seconds
-    private long startTimeInMillis = 90000; // Store the initial time
-    private static final long ONE_MINUTE_MILLIS = 60000; // 1 minute threshold
     private static final long FORTY_FIVE_SECONDS_MILLIS = 45000; // 45 seconds threshold
     private boolean warningShown = false;
     private Dialog pauseDialog; // Dialog for pause menu
+
+    // Track time spent in the game
+    private long startTime;
 
     // Track correct animal placements
     private HashMap<Integer, View> targetZones = new HashMap<>();
@@ -53,6 +54,9 @@ public class medium extends AppCompatActivity {
 
         // Set up timer
         timerTextView = findViewById(R.id.timer_medium);
+
+        // Record start time when the game begins
+        startTime = System.currentTimeMillis();
 
         // Initialize and start the timer
         startTimer();
@@ -79,15 +83,15 @@ public class medium extends AppCompatActivity {
                 gameTimer.cancel();
             }
 
-            // Save time taken for display purposes
-            long timeTaken = startTimeInMillis - timeLeftInMillis;
+            // Calculate time taken to complete the game
+            long timeElapsed = System.currentTimeMillis() - startTime;
 
             // Check time-based conditions for different endings
-            if (timeTaken < FORTY_FIVE_SECONDS_MILLIS) { // Less than 45 seconds
-                // Show great job screen
+            if (timeElapsed < FORTY_FIVE_SECONDS_MILLIS) {
+                // Show great job screen if completed in less than 45 seconds
                 showGreatJobScreen();
-            } else { // 45 seconds or more
-                // Show regular completion screen
+            } else {
+                // Show regular completion screen if it took 45 seconds or more
                 showWinScreen();
             }
         });
@@ -315,6 +319,9 @@ public class medium extends AppCompatActivity {
         timeLeftInMillis = 90000;
         warningShown = false;
         isPaused = false;
+
+        // Reset start time
+        startTime = System.currentTimeMillis();
 
         // Restart the activity
         recreate();

@@ -2,6 +2,7 @@ package com.example.junglequest;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.DragEvent;
@@ -33,6 +34,10 @@ public class hard extends AppCompatActivity {
     private boolean warningShown = false;
     private Dialog pauseDialog; // Dialog for pause menu
 
+    // Track elapsed time directly
+    private long startTimeInMillis = 120000; // Initial time
+    private long elapsedTimeInMillis = 0; // Time elapsed so far
+
     // Track correct animal placements
     private HashMap<Integer, View> targetZones = new HashMap<>();
     private HashMap<Integer, Integer> correctPlacements = new HashMap<>();
@@ -43,6 +48,15 @@ public class hard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_hard);
+
+        // If startTime wasn't passed in intent, record it now
+        if (getIntent().getLongExtra("startTime", 0) == 0) {
+            getIntent().putExtra("startTime", System.currentTimeMillis());
+        }
+
+        // Reset elapsed time at start
+        elapsedTimeInMillis = 0;
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.hard_main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -78,6 +92,9 @@ public class hard extends AppCompatActivity {
             if (gameTimer != null) {
                 gameTimer.cancel();
             }
+
+            // Calculate elapsed time
+            elapsedTimeInMillis = startTimeInMillis - timeLeftInMillis;
 
             // Show different completion screens based on time remaining
             if (timeLeftInMillis < ONE_MINUTE_MILLIS) {
@@ -190,6 +207,22 @@ public class hard extends AppCompatActivity {
 
     // Show win screen with clickable buttons
     private void showWinScreen() {
+        // Calculate completion time
+        long endTime = System.currentTimeMillis();
+        long startTime = getIntent().getLongExtra("startTime", 0);
+        long completionTimeMs = endTime - startTime;
+
+        // Convert to a readable format (e.g., minutes:seconds)
+        int seconds = (int) (completionTimeMs / 1000) % 60;
+        int minutes = (int) ((completionTimeMs / (1000 * 60)) % 60);
+        String timeString = String.format("%d:%02d", minutes, seconds);
+
+        // Save the completion time with a unique key for hard difficulty
+        SharedPreferences sharedPreferences = getSharedPreferences("JungleQuestPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("completionTimeHard", timeString);
+        editor.apply();
+
         setContentView(R.layout.activity_youwin);
 
         // Set up button click listeners on the win screen
@@ -209,7 +242,7 @@ public class hard extends AppCompatActivity {
         if (instructionsButton != null) {
             instructionsButton.setOnClickListener(v -> {
                 // Navigate to instructions screen
-                Intent intent = new Intent(hard.this, aboutgame.class);
+                Intent intent = new Intent(hard.this, choosedif.class);
                 startActivity(intent);
                 finish();
             });
@@ -227,6 +260,22 @@ public class hard extends AppCompatActivity {
 
     // Show great job screen with clickable buttons
     private void showGreatJobScreen() {
+        // Calculate completion time
+        long endTime = System.currentTimeMillis();
+        long startTime = getIntent().getLongExtra("startTime", 0);
+        long completionTimeMs = endTime - startTime;
+
+        // Convert to a readable format (e.g., minutes:seconds)
+        int seconds = (int) (completionTimeMs / 1000) % 60;
+        int minutes = (int) ((completionTimeMs / (1000 * 60)) % 60);
+        String timeString = String.format("%d:%02d", minutes, seconds);
+
+        // Save the completion time with a unique key for hard difficulty
+        SharedPreferences sharedPreferences = getSharedPreferences("JungleQuestPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("completionTimeHard", timeString);
+        editor.apply();
+
         setContentView(R.layout.activity_greatjob);
 
         // Set up button click listeners on the great job screen
@@ -246,7 +295,7 @@ public class hard extends AppCompatActivity {
         if (instructionsButton != null) {
             instructionsButton.setOnClickListener(v -> {
                 // Navigate to instructions screen
-                Intent intent = new Intent(hard.this, aboutgame.class);
+                Intent intent = new Intent(hard.this, choosedif.class);
                 startActivity(intent);
                 finish();
             });
@@ -324,6 +373,7 @@ public class hard extends AppCompatActivity {
     private void restartGame() {
         // Reset the timer
         timeLeftInMillis = 120000;
+        elapsedTimeInMillis = 0;
         warningShown = false;
         isPaused = false;
 
@@ -435,6 +485,9 @@ public class hard extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 timeLeftInMillis = millisUntilFinished;
                 updateTimerText();
+
+                // Update the elapsed time
+                elapsedTimeInMillis = startTimeInMillis - timeLeftInMillis;
 
                 // Just change the text color to red when less than a minute remains
                 if (millisUntilFinished < ONE_MINUTE_MILLIS && !warningShown) {

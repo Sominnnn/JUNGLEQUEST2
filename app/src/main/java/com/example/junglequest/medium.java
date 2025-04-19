@@ -2,6 +2,7 @@ package com.example.junglequest;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.DragEvent;
@@ -47,6 +48,12 @@ public class medium extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_medium);
+
+        // If startTime wasn't passed in intent, record it now
+        if (getIntent().getLongExtra("startTime", 0) == 0) {
+            getIntent().putExtra("startTime", System.currentTimeMillis());
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.hard_main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -86,9 +93,6 @@ public class medium extends AppCompatActivity {
 
             // Calculate total elapsed time
             elapsedTimeInMillis = startTimeInMillis - timeLeftInMillis;
-
-            // Debug toast to verify the elapsed time
-            Toast.makeText(this, "Time taken: " + (elapsedTimeInMillis / 1000) + " seconds", Toast.LENGTH_SHORT).show();
 
             // Show different completion screens based on elapsed time
             if (elapsedTimeInMillis < FORTY_FIVE_SECONDS_MILLIS) {
@@ -187,6 +191,23 @@ public class medium extends AppCompatActivity {
 
     // Show win screen with clickable buttons
     private void showWinScreen() {
+        // Calculate completion time
+        long endTime = System.currentTimeMillis();
+        long startTime = getIntent().getLongExtra("startTime", 0);
+        long completionTimeMs = endTime - startTime;
+
+        // Convert to a readable format (e.g., minutes:seconds)
+        int seconds = (int) (completionTimeMs / 1000) % 60;
+        int minutes = (int) ((completionTimeMs / (1000 * 60)) % 60);
+        String timeString = String.format("%d:%02d", minutes, seconds);
+
+        // Save the completion time with a unique key for medium difficulty
+        SharedPreferences sharedPreferences = getSharedPreferences("JungleQuestPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("completionTimeMedium", timeString);
+        editor.apply();
+
+        // Now change layout
         setContentView(R.layout.activity_youwin);
 
         // Set up button click listeners on the win screen
@@ -224,6 +245,23 @@ public class medium extends AppCompatActivity {
 
     // Show great job screen with clickable buttons
     private void showGreatJobScreen() {
+        // Calculate completion time
+        long endTime = System.currentTimeMillis();
+        long startTime = getIntent().getLongExtra("startTime", 0);
+        long completionTimeMs = endTime - startTime;
+
+        // Convert to a readable format (e.g., minutes:seconds)
+        int seconds = (int) (completionTimeMs / 1000) % 60;
+        int minutes = (int) ((completionTimeMs / (1000 * 60)) % 60);
+        String timeString = String.format("%d:%02d", minutes, seconds);
+
+        // Save the completion time with a unique key for medium difficulty
+        SharedPreferences sharedPreferences = getSharedPreferences("JungleQuestPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("completionTimeMedium", timeString);
+        editor.apply();
+
+        // Now change layout
         setContentView(R.layout.activity_greatjob);
 
         // Set up button click listeners on the great job screen

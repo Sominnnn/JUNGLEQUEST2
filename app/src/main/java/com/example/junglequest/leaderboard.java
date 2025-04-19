@@ -1,9 +1,11 @@
 package com.example.junglequest;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,19 @@ public class leaderboard extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Get references to the TextViews in your layout where you'll display the data
+        TextView playerNameTextView = findViewById(R.id.player_name_textview);
+        TextView completionTimeTextView = findViewById(R.id.completion_time_textview);
+
+        // Retrieve the saved player name and completion time from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("JungleQuestPrefs", MODE_PRIVATE);
+        String playerName = sharedPreferences.getString("playerName", "No player");
+        String completionTime = sharedPreferences.getString("completionTime", "No time recorded");
+
+        // Display the values in the TextViews
+        playerNameTextView.setText(playerName);
+        completionTimeTextView.setText(completionTime);
 
         Button homeButton = findViewById(R.id.homebtn_leaderboard);
         homeButton.setOnClickListener(new View.OnClickListener() {

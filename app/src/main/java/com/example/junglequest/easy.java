@@ -2,6 +2,7 @@ package com.example.junglequest;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.DragEvent;
@@ -43,6 +44,11 @@ public class easy extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_easy);
+
+        // If startTime wasn't passed in intent, record it now
+        if (getIntent().getLongExtra("startTime", 0) == 0) {
+            getIntent().putExtra("startTime", System.currentTimeMillis());
+        }
 
         // Find the correct main layout ID
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.hard_main), (v, insets) -> {
@@ -165,6 +171,23 @@ public class easy extends AppCompatActivity {
 
     // Show win screen with clickable buttons (for completing in 30-60 seconds)
     private void showWinScreen() {
+        // Calculate completion time
+        long endTime = System.currentTimeMillis();
+        long startTime = getIntent().getLongExtra("startTime", 0);
+        long completionTimeMs = endTime - startTime;
+
+        // Convert to a readable format (e.g., minutes:seconds)
+        int seconds = (int) (completionTimeMs / 1000) % 60;
+        int minutes = (int) ((completionTimeMs / (1000 * 60)) % 60);
+        String timeString = String.format("%d:%02d", minutes, seconds);
+
+        // Save the completion time
+        SharedPreferences sharedPreferences = getSharedPreferences("JungleQuestPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("completionTime", timeString);
+        editor.apply();
+
+        // Now change layout
         setContentView(R.layout.activity_youwin);
 
         // Set up button click listeners on the win screen
@@ -202,6 +225,23 @@ public class easy extends AppCompatActivity {
 
     // Show great job screen with clickable buttons (for completing in under 30 seconds)
     private void showGreatJobScreen() {
+        // Calculate completion time
+        long endTime = System.currentTimeMillis();
+        long startTime = getIntent().getLongExtra("startTime", 0);
+        long completionTimeMs = endTime - startTime;
+
+        // Convert to a readable format (e.g., minutes:seconds)
+        int seconds = (int) (completionTimeMs / 1000) % 60;
+        int minutes = (int) ((completionTimeMs / (1000 * 60)) % 60);
+        String timeString = String.format("%d:%02d", minutes, seconds);
+
+        // Save the completion time
+        SharedPreferences sharedPreferences = getSharedPreferences("JungleQuestPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("completionTime", timeString);
+        editor.apply();
+
+        // Now change layout
         setContentView(R.layout.activity_greatjob);
 
         // Set up button click listeners on the great job screen

@@ -25,7 +25,8 @@ public class medium extends AppCompatActivity {
     private CountDownTimer gameTimer;
     private TextView timerTextView;
     private boolean isPaused = false;
-    private long timeLeftInMillis = 60000; // 60 seconds
+    private long timeLeftInMillis = 90000; // 1 minute and 30 seconds
+    private long startTimeInMillis = 90000; // Store the initial time
 
     // Track correct animal placements
     private HashMap<Integer, View> targetZones = new HashMap<>();
@@ -71,11 +72,20 @@ public class medium extends AppCompatActivity {
                 gameTimer.cancel();
             }
 
-            // Save time taken for display purposes if needed
-            long timeTaken = 60000 - timeLeftInMillis;
+            // Save time taken for display purposes
+            long timeTaken = startTimeInMillis - timeLeftInMillis;
 
-            // Show winner screen
-            setContentView(R.layout.activity_youwin);
+            // Check time-based conditions for different endings
+            if (timeTaken < 45000) { // Less than 45 seconds
+                // Show great job screen
+                setContentView(R.layout.activity_greatjob);
+            } else if (timeTaken <= 60000) { // Between 45 seconds and 1 minute
+                // Show winner screen
+                setContentView(R.layout.activity_youwin);
+            } else { // More than 1th minute but within time limit
+                // Show regular completion screen
+                setContentView(R.layout.activity_youwin);
+            }
         });
 
         // Get the draggable animal ImageViews

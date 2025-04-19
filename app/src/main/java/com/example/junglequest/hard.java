@@ -1,6 +1,7 @@
 package com.example.junglequest;
 
 import android.content.ClipData;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.DragEvent;
@@ -81,10 +82,10 @@ public class hard extends AppCompatActivity {
             // Show different completion screens based on time remaining
             if (timeLeftInMillis < ONE_MINUTE_MILLIS) {
                 // Completed with less than 1 minute remaining
-                setContentView(R.layout.activity_greatjob);
+                showGreatJobScreen();
             } else {
                 // Completed with more than 1 minute remaining
-                setContentView(R.layout.activity_youwin);
+                showWinScreen();
             }
         });
 
@@ -187,6 +188,80 @@ public class hard extends AppCompatActivity {
         initializePauseDialog();
     }
 
+    // Show win screen with clickable buttons
+    private void showWinScreen() {
+        setContentView(R.layout.activity_youwin);
+
+        // Set up button click listeners on the win screen
+        Button homeButton = findViewById(R.id.homebtn_youwin);
+        Button instructionsButton = findViewById(R.id.instructionbtn_youwin);
+        Button leaderboardsButton = findViewById(R.id.leaderboardbtn_youwin2);
+
+        if (homeButton != null) {
+            homeButton.setOnClickListener(v -> {
+                // Navigate to home/main menu
+                Intent intent = new Intent(hard.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+
+        if (instructionsButton != null) {
+            instructionsButton.setOnClickListener(v -> {
+                // Navigate to instructions screen
+                Intent intent = new Intent(hard.this, aboutgame.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+
+        if (leaderboardsButton != null) {
+            leaderboardsButton.setOnClickListener(v -> {
+                // Navigate to leaderboards screen
+                Intent intent = new Intent(hard.this, leaderboard.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+    }
+
+    // Show great job screen with clickable buttons
+    private void showGreatJobScreen() {
+        setContentView(R.layout.activity_greatjob);
+
+        // Set up button click listeners on the great job screen
+        Button homeButton = findViewById(R.id.homebtn_greatjob);
+        Button instructionsButton = findViewById(R.id.playagainbtn_greatjob);
+        Button leaderboardsButton = findViewById(R.id.leaderoardbtn_greatjob);
+
+        if (homeButton != null) {
+            homeButton.setOnClickListener(v -> {
+                // Navigate to home/main menu
+                Intent intent = new Intent(hard.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+
+        if (instructionsButton != null) {
+            instructionsButton.setOnClickListener(v -> {
+                // Navigate to instructions screen
+                Intent intent = new Intent(hard.this, aboutgame.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+
+        if (leaderboardsButton != null) {
+            leaderboardsButton.setOnClickListener(v -> {
+                // Navigate to leaderboards screen
+                Intent intent = new Intent(hard.this, leaderboard.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+    }
+
     // Initialize pause dialog
     private void initializePauseDialog() {
         pauseDialog = new Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
@@ -259,9 +334,9 @@ public class hard extends AppCompatActivity {
     // Return to main menu
     private void quitToMainMenu() {
         // Navigate to the main menu activity
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
         finish(); // Close this activity
-        // If you have a specific navigation, use it here
-        // For example: startActivity(new Intent(this, MainActivity.class));
     }
 
     // Helper method to set up drag functionality
@@ -374,6 +449,24 @@ public class hard extends AppCompatActivity {
             public void onFinish() {
                 // Handle game over when timer expires
                 setContentView(R.layout.activity_timerunout);
+
+                // Add click listeners to buttons on time run out screen as well
+                Button homeButton = findViewById(R.id.homebtn_timerunout);
+                Button restartButton = findViewById(R.id.instructionbtn_timerunout);
+
+                if (homeButton != null) {
+                    homeButton.setOnClickListener(v -> {
+                        Intent intent = new Intent(hard.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    });
+                }
+
+                if (restartButton != null) {
+                    restartButton.setOnClickListener(v -> {
+                        restartGame();
+                    });
+                }
             }
         }.start();
     }

@@ -18,6 +18,9 @@ public class latestsignup extends AppCompatActivity {
 
     private EditText usernameEditText;
     private Button startButton;
+    // Define constant for SharedPreferences name and key
+    public static final String PREF_NAME = "JungleQuestPrefs";
+    public static final String KEY_USERNAME = "currentUser";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,9 @@ public class latestsignup extends AppCompatActivity {
         // Initialize UI elements
         usernameEditText = findViewById(R.id.username_edit_text);
         startButton = findViewById(R.id.startbtn_latestsignup);
+
+        // Pre-fill the username if it exists in SharedPreferences
+        loadSavedUsername();
 
         // Set click listener for start button
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -57,10 +63,26 @@ public class latestsignup extends AppCompatActivity {
         });
     }
 
+    // Method to save username to SharedPreferences
     private void saveUsername(String username) {
-        SharedPreferences preferences = getSharedPreferences("JungleQuestPrefs", MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("currentUser", username);
-        editor.apply();
+        editor.putString(KEY_USERNAME, username);
+        editor.commit(); // Using commit() instead of apply() for immediate writing
+    }
+
+    // Method to load saved username if it exists
+    private void loadSavedUsername() {
+        SharedPreferences preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        String savedUsername = preferences.getString(KEY_USERNAME, "");
+        if (!savedUsername.isEmpty()) {
+            usernameEditText.setText(savedUsername);
+        }
+    }
+
+    // Add this static method to easily get username from any activity
+    public static String getUsername(AppCompatActivity activity) {
+        SharedPreferences preferences = activity.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        return preferences.getString(KEY_USERNAME, "Unknown Player");
     }
 }

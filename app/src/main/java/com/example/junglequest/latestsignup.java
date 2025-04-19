@@ -37,9 +37,6 @@ public class latestsignup extends AppCompatActivity {
         usernameEditText = findViewById(R.id.username_edit_text);
         startButton = findViewById(R.id.startbtn_latestsignup);
 
-        // Pre-fill the username if it exists in SharedPreferences
-        loadSavedUsername();
-
         // Set click listener for start button
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,8 +49,18 @@ public class latestsignup extends AppCompatActivity {
                     return;
                 }
 
+                // Debug toast to verify username
+                Toast.makeText(latestsignup.this, "Username saved: " + username, Toast.LENGTH_SHORT).show();
+
                 // Save username in SharedPreferences
                 saveUsername(username);
+
+                // Verify the save worked immediately
+                String savedName = getSharedPreferences(PREF_NAME, MODE_PRIVATE).getString(KEY_USERNAME, "Not Saved");
+                if (!savedName.equals(username)) {
+                    // Log the issue or handle it
+                    Toast.makeText(latestsignup.this, "Warning: Username save verification failed", Toast.LENGTH_SHORT).show();
+                }
 
                 // Start the game activity
                 Intent intent = new Intent(latestsignup.this, choosedif.class);
@@ -68,21 +75,23 @@ public class latestsignup extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(KEY_USERNAME, username);
-        editor.commit(); // Using commit() instead of apply() for immediate writing
-    }
+        // Use commit() for immediate writing to make absolutely sure it's saved before continuing
+        boolean success = editor.commit();
 
-    // Method to load saved username if it exists
-    private void loadSavedUsername() {
-        SharedPreferences preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        String savedUsername = preferences.getString(KEY_USERNAME, "");
-        if (!savedUsername.isEmpty()) {
-            usernameEditText.setText(savedUsername);
+        if (!success) {
+            Toast.makeText(this, "Failed to save username", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Add this static method to easily get username from any activity
+    // Static method to get username from any activity
     public static String getUsername(AppCompatActivity activity) {
         SharedPreferences preferences = activity.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        return preferences.getString(KEY_USERNAME, "Unknown Player");
+        String username = preferences.getString(KEY_USERNAME, "");
+
+        // If username is empty, return a default value
+        if (username == null || username.isEmpty()) {
+            return "Player";
+        }
+        return username;
     }
 }
